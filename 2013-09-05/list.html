@@ -1,0 +1,14 @@
+I'm a list
+
+        <div ng-repeat="person in model.people">
+            {{ person.name }} is {{ person.age }} years old
+            <div ng-show="person.age > 23">SO WISE</div>
+            <a ng-click="person.age = 24">Make me 24</a>
+            <br />
+            <hr>
+        </div>
+        <a ng-click="go('/create')">Add</a>
+
+<pre>
+{{ model.people | json }}
+</pre>

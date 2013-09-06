@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript" src="angular-route.js"></script>
+    <script type="text/javascript" src="angular-resource.js"></script>
+    <script>
+        var myApp = angular.module("myApp", ["ngRoute", 'ngResource']);
+        myApp.config(function ($routeProvider) {
+            $routeProvider.
+                    when('/', {templateUrl: 'list.html', controller: ListCtrl}).
+                    when('/create', {templateUrl: 'create.html', controller: CreateCtrl}).
+                    otherwise({redirectTo: '/'})
+            ;
+        });
+
+        myApp.factory('Person', function ($resource) {
+            return $resource('https://api.mongolab.com/api/1/databases/jweir-test/collections/people/:id',
+                    {apiKey: 'OyAMtRTRwDbDCyKsMvecg1i-O_sM4VYp'},
+                    {
+
+                    });
+        });
+
+        function CreateCtrl($scope, Person, $location) {
+            $scope.save = function () {
+                Person.save($scope.person, function(d){
+                    $location.path('/');
+                });
+            }
+        }
+
+        function ListCtrl($scope, $location, Person) {
+            $scope.model = {
+            };
+
+            $scope.model.people = Person.query();
+
+            $scope.go = function (p) {
+                $location.path(p);
+            }
+
+            $scope.save = function (theGuy) {
+                console.log(theGuy.name);
+            };
+        }
+
+    </script>
+</head>
+<body ng-app="myApp">
+<div ng-view></div>
+</body>
+</html>
